@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .view-div{
+            display: flex;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+
+<form id="createForm">
+   <input type="text" id="buttonText" placeholder="Текст кнопки">
+   <div class="selector-type">
+    <button type="button" id="addSelectors">+</button>
+    <div id="types-list">
+        <div class="type-item">
+            <select> 
+                <option value="">Параметр</option> 
+                <option value="autofocus">autofocus</option> 
+                <option value="autocomplete">autocomplete</option> 
+                <option value="disabled">вisabled</option> 
+                <option value="form">form</option> 
+                <option value="formaction">formaction</option> 
+                <option value="formenctype">formenctype</option> 
+                <option value="formmethod">formmethod</option> 
+                <option value="formnovalidate">formnovalidate</option> 
+                <option value="formtarget">formtarget</option> 
+                <option value="type">type</option> 
+                <option value="name">name</option> 
+                <option value="value">value</option> 
+            </select>
+            <input type="text" placeholder="Значение параметра">
+        </div>
+    </div>
+    
+
+
+
+    
+   </div>
+
+   <button type="button" id="addStyles">+</button>
+   <div id="styles-list">
+    
+    <div>
+    <input type="text" class="style-name" placeholder="Наименование стиля">
+    <input type="text" class="style-value" placeholder="Значение стиля">
+    </div>
+   </div>
+   
+   <div >
+    <select> 
+        <option value="">Слушатель события</option> 
+        <option value="click">click</option> 
+        <option value="contextmenu">contextmenu</option> 
+        <option value="mouseover">mouseover</option> 
+        <option value="mouseout">mouseout</option> 
+        <option value="mousedown">mousedown</option> 
+        <option value="mouseup">mouseup</option> 
+        <option value="mousemove">mousemove</option> 
+        
+    </select>
+    <textarea placeholder="Функция" disabled>alert("working script")</textarea>
+   </div>
+   
+   <button type="submit">Создать</button>
+</form>
+   <div class="view-div" id="viewDiv">
+
+   </div>
+
+
+
+    <script src="./js/component.js"> 
+    </script>
+    <script type="module">
+    import Component from "./js/component.js"
+    
+    function makeSomething(){
+        alert("working script")
+    }
+
+    let createForm=document.getElementById("createForm");
+    let viewDiv=document.getElementById("viewDiv");
+    let addSelectors=document.getElementById("addSelectors");
+    let typesList=document.getElementById("types-list");
+    let stylesList=document.getElementById("styles-list");
+    let addStyles=document.getElementById("addStyles");
+
+
+    addSelectors.addEventListener('click', ()=>{
+        typesList.innerHTML+=(`<div class="type-item">
+            <select> 
+                <option value="">Параметр</option> 
+                <option value="autofocus">autofocus</option> 
+                <option value="autocomplete">autocomplete</option> 
+                <option value="disabled">вisabled</option> 
+                <option value="form">form</option> 
+                <option value="formaction">formaction</option> 
+                <option value="formenctype">formenctype</option> 
+                <option value="formmethod">formmethod</option> 
+                <option value="formnovalidate">formnovalidate</option> 
+                <option value="formtarget">formtarget</option> 
+                <option value="type">type</option> 
+                <option value="name">name</option> 
+                <option value="value">value</option> 
+            </select>
+            <input type="text" placeholder="Значение параметра">
+        </div>`)
+    })
+
+    addStyles.addEventListener('click', ()=>{
+        stylesList.innerHTML+=(`<div>
+    <input type="text" class="style-name" placeholder="Наименование стиля">
+    <input type="text" class="style-value" placeholder="Значение стиля">
+    </div>`)
+    })
+
+
+
+    createForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        let typesListSelect=document.querySelectorAll("#types-list select");
+        let typesListInput=document.querySelectorAll("#types-list input");
+        let typesListButton={};
+        typesListSelect.forEach((item,index)=>{
+            if(item.value){
+                typesListButton[item.value]=typesListInput[index].value
+            }
+        })
+
+
+        let stylesListNames=document.querySelectorAll("#styles-list .style-name");
+        let stylesListValues=document.querySelectorAll("#styles-list .style-value");
+        let stylesListButton={};
+        stylesListNames.forEach((item,index)=>{
+            
+            if(item.value){
+                stylesListButton[item.value]=stylesListValues[index].value
+            }
+        })
+
+   
+        let textButton=document.getElementById("buttonText").value;
+
+        console.log(textButton , typesListButton, stylesListButton)
+       if(textButton && typesListButton && stylesListButton){
+        let mainButton=new Component('<button></button>', 
+     typesListButton, 
+     stylesListButton, 
+      textButton, 
+      {click:makeSomething});
+
+
+    viewDiv.append(mainButton.createButton())
+       }else{
+        alert("Заполните хотя бы одно поле")
+
+       }
+
+        
+    })
+
+    
+    
+
+    </script>
+
+
+</body>
+</html>
